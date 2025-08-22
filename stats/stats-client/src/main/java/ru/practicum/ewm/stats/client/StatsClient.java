@@ -41,8 +41,8 @@ public class StatsClient {
             boolean unique
     ) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(statsServerUrl + "/stats")
-                .queryParam("start", formatter.format(start))
-                .queryParam("end", formatter.format(end))
+                .queryParam("start", start.format(formatter))
+                .queryParam("end", end.format(formatter))
                 .queryParam("unique", unique);
 
         if (uris != null && !uris.isEmpty()) {
@@ -51,76 +51,10 @@ public class StatsClient {
             }
         }
 
-        ResponseEntity<ViewStatsResponse[]> response = restTemplate.getForEntity(builder.toUriString(), ViewStatsResponse[].class);
+        String url = builder.build(false).toUriString();
+
+        ResponseEntity<ViewStatsResponse[]> response = restTemplate.getForEntity(url, ViewStatsResponse[].class);
         ViewStatsResponse[] statsArr = response.getBody();
         return statsArr == null ? new ArrayList<>() : Arrays.asList(statsArr);
     }
 }
-
-
-
-
-
-
-
-//package ru.practicum.ewm.stats.client;
-//
-//import org.springframework.http.*;
-//import org.springframework.web.client.RestTemplate;
-//import ru.practicum.ewm.stats.dto.EndpointHitRequest;
-//import ru.practicum.ewm.stats.dto.ViewStatsResponse;
-//
-//import java.time.LocalDateTime;
-//import java.time.format.DateTimeFormatter;
-//import java.util.Arrays;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-//public class StatsClient {
-//    private final String serverUrl;
-//    private final RestTemplate restTemplate;
-//
-//    public StatsClient(String serverUrl) {
-//        this.serverUrl = serverUrl;
-//        this.restTemplate = new RestTemplate();
-//    }
-//
-//    public void saveHit(EndpointHitRequest hitRequest) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//        HttpEntity<EndpointHitRequest> requestEntity = new HttpEntity<>(hitRequest, headers);
-//
-//        restTemplate.exchange(
-//                serverUrl + "/hit",
-//                HttpMethod.POST,
-//                requestEntity,
-//                Void.class
-//        );
-//    }
-//
-//    public List<ViewStatsResponse> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//
-//        Map<String, Object> parameters = new HashMap<>();
-//        parameters.put("start", start.format(formatter));
-//        parameters.put("end", end.format(formatter));
-//
-//        if (uris != null && !uris.isEmpty()) {
-//            parameters.put("uris", String.join(",", uris));
-//        }
-//
-//        if (unique != null) {
-//            parameters.put("unique", unique);
-//        }
-//
-//        ResponseEntity<ViewStatsResponse[]> response = restTemplate.getForEntity(
-//                serverUrl + "/stats?start={start}&end={end}&uris={uris}&unique={unique}",
-//                ViewStatsResponse[].class,
-//                parameters
-//        );
-//
-//        return Arrays.asList(response.getBody());
-//    }
-//}
