@@ -9,10 +9,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>main-service</artifactId>
+    <artifactId>ewm-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>Main Service</name>
+    <name>EWM Service</name>
 
     <dependencies>
         <dependency>
