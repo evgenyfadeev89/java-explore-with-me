@@ -1,14 +1,70 @@
 services:
+
+  # Статистика: сервер и база
+  stats-db:
+    image: postgres:16.1
+    container_name: stats-db
+    environment:
+      POSTGRES_USER: stats_user
+      POSTGRES_PASSWORD: stats_pass
+      POSTGRES_DB: stats_db
+    volumes:
+      - stats_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+    ports:
+      - "5433:5432"
+
   stats-server:
+    build: stats/stats-server
+    container_name: stats-server
+    environment:
+      - SERVER_PORT=9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats_db
+      - SPRING_DATASOURCE_USERNAME=stats_user
+      - SPRING_DATASOURCE_PASSWORD=stats_pass
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      stats-db:
+        condition: service_healthy
+    restart: on-failure
     ports:
       - "9090:9090"
 
-  stats-db:
+  # Основной сервис и база
+  main-db:
     image: postgres:16.1
+    container_name: main-db
+    environment:
+      POSTGRES_USER: main_user
+      POSTGRES_PASSWORD: main_pass
+      POSTGRES_DB: main_db
+    volumes:
+      - main_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+    ports:
+      - "5434:5432"
 
-  ewm-service:
+  main-service:
+    build: main-service
+    container_name: main-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main_db
+      - SPRING_DATASOURCE_USERNAME=main_user
+      - SPRING_DATASOURCE_PASSWORD=main_pass
+    depends_on:
+       main-db:
+        condition: service_healthy
     ports:
       - "8080:8080"
 
-  ewm-db:
-    image: postgres:16.1
+volumes:
+  stats_db_data: {}
+  main_db_data: {}
