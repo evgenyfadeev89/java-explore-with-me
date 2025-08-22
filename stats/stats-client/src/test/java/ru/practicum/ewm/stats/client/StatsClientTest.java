@@ -39,13 +39,11 @@ public class StatsClientTest {
     @Test
     public void testSaveHit() {
         String jsonResponse = """
-                {
-                  "id": 1,
-                  "app": "ewm-main-service",
-                  "uri": "/events/1",
-                  "ip": "127.0.0.1",
-                  "timestamp": "2025-08-22 20:00:00"
-                }
+                {"id": 1,
+                "app": "ewm-main-service",
+                "uri": "/events/1",
+                "ip": "127.0.0.1",
+                "timestamp": "2025-08-22 20:00:00"}
                 """;
 
         mockServer.expect(requestTo("http://stats-server:9090/hit"))
@@ -74,11 +72,9 @@ public class StatsClientTest {
     public void testGetStats() {
         String jsonResponse = """
                 [
-                  {
-                    "app": "ewm-main-service",
+                  {"app": "ewm-main-service",
                     "uri": "/events/1",
-                    "hits": 5
-                  }
+                    "hits": 5}
                 ]
                 """;
 
