@@ -39,12 +39,13 @@ public class StatsClientTest {
     @Test
     public void testSaveHit() {
         String jsonResponse = """
-                {"id": 1,
-                "app": "ewm-main-service",
-                "uri": "/events/1",
-                "ip": "127.0.0.1",
-                "timestamp": "2025-08-22 20:00:00"}
-                """;
+        {
+        "id": 1,"app": "ewm-main-service",
+        "uri": "/events/1",
+        "ip": "127.0.0.1",
+        "timestamp": "2025-08-22 20:00:00"
+        }
+        """;
 
         mockServer.expect(requestTo("http://stats-server:9090/hit"))
                 .andExpect(method(HttpMethod.POST))
