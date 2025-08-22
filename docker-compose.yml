@@ -2,7 +2,7 @@ services:
 
   # Статистика: сервер и база
   stats-db:
-    image: postgres:16.1_stats
+    image: postgres:16.1
     container_name: stats-db
     environment:
       POSTGRES_USER: stats_user
@@ -36,7 +36,7 @@ services:
 
   # Основной сервис и база
   ewm-db:
-    image: postgres:16.1_ewm
+    image: postgres:16.1
     container_name: ewm-db
     environment:
       POSTGRES_USER: ewm_user
