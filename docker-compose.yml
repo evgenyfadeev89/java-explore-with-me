@@ -2,7 +2,7 @@ services:
 
   # Статистика: сервер и база
   stats-db:
-    image: postgres:16.1
+    image: postgres:16.1_stats
     container_name: stats-db
     environment:
       POSTGRES_USER: stats_user
@@ -35,8 +35,8 @@ services:
       - "9090:9090"
 
   # Основной сервис и база
-  main-db:
-    image: postgres:16.1
+  ewm-db:
+    image: postgres:16.1_ewm
     container_name: ewm-db
     environment:
       POSTGRES_USER: ewm_user
