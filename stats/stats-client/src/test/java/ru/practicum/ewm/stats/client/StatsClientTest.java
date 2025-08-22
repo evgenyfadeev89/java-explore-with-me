@@ -39,18 +39,20 @@ public class StatsClientTest {
     @Test
     public void testSaveHit() {
         String jsonResponse = """
-        {
-          "id": 1,
-          "app": "ewm-main-service",
-          "uri": "/events/1",
-          "ip": "127.0.0.1",
-          "timestamp": "2025-08-22 20:00:00"
-        }
-        """;
+                  "id": 1,
+                  "app": "ewm-main-service",
+                  "uri": "/events/1",
+                  "ip": "127.0.0.1",
+                  "timestamp": "2025-08-22 20:00:00"
+                """;
 
-        mockServer.expect(requestTo("http://stats-server:9090/hit")).andExpect(method(HttpMethod.POST)).andRespond(withStatus(HttpStatusCode.valueOf(201)).contentType(MediaType.APPLICATION_JSON).body(jsonResponse));
+        mockServer.expect(requestTo("http://stats-server:9090/hit")).
+                andExpect(method(HttpMethod.POST)).
+                andRespond(withStatus(HttpStatusCode.valueOf(201)).
+                        contentType(MediaType.APPLICATION_JSON).body("{" + jsonResponse + "}"));
 
-        EndpointHitRequest request = new EndpointHitRequest("ewm-main-service", "/events/1", "127.0.0.1", LocalDateTime.of(2025, 8, 22, 20, 0, 0));
+        EndpointHitRequest request = new EndpointHitRequest("ewm-main-service", "/events/1", "127.0.0.1",
+                LocalDateTime.of(2025, 8, 22, 20, 0, 0));
 
         EndpointHitResponse response = statsClient.saveHit(request);
 
@@ -64,16 +66,15 @@ public class StatsClientTest {
     @Test
     public void testGetStats() {
         String jsonResponse = """
-        [
-          {
-            "app": "ewm-main-service",
-            "uri": "/events/1",
-            "hits": 5
-          }
-        ]
-        """;
+                    "app": "ewm-main-service",
+                    "uri": "/events/1",
+                    "hits": 5
+                """;
 
-        mockServer.expect(requestTo("http://stats-server:9090/stats?start=2025-08-22%2019:00:00&" + "end=2025-08-22%2021:00:00&unique=false&uris=/events/1")).andExpect(method(HttpMethod.GET)).andRespond(withSuccess(jsonResponse, MediaType.APPLICATION_JSON));
+        mockServer.expect(requestTo("http://stats-server:9090/stats?start=2025-08-22%2019:00:00&" +
+                        "end=2025-08-22%2021:00:00&unique=false&uris=/events/1")).
+                andExpect(method(HttpMethod.GET)).
+                andRespond(withSuccess("[{" + jsonResponse + "}]", MediaType.APPLICATION_JSON));
 
         LocalDateTime start = LocalDateTime.of(2025, 8, 22, 19, 0, 0);
         LocalDateTime end = LocalDateTime.of(2025, 8, 22, 21, 0, 0);
