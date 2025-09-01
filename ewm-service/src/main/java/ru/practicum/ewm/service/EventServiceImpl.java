@@ -157,8 +157,8 @@ public class EventServiceImpl implements EventService {
             return true;
         }
 
-        Integer confirmedRequests = eventRepository.countConfirmedRequestsByEventId(event.getId()
-                , ParticipationRequest.Status.CONFIRMED);
+        Integer confirmedRequests = eventRepository.countConfirmedRequestsByEventId(event.getId(),
+                ParticipationRequest.Status.CONFIRMED);
         return confirmedRequests < event.getParticipantLimit();
     }
 
