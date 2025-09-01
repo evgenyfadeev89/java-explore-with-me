@@ -1,12 +1,9 @@
-
-DROP TABLE categories;
 -- Схема БД для категорий
 CREATE TABLE IF NOT EXISTS categories (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
-DROP TABLE users;
 -- Схема БД для пользователей
 CREATE TABLE IF NOT EXISTS users (
     id BIGSERIAL PRIMARY KEY,
@@ -14,14 +11,12 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(254) NOT NULL UNIQUE
 );
 
-DROP TABLE location_type;
 -- Встроенный тип для координат
 CREATE TYPE location_type AS (
     lat REAL,
     lon REAL
 );
 
-DROP TABLE events;
 -- Таблица для событий
 CREATE TABLE IF NOT EXISTS events (
     id BIGSERIAL PRIMARY KEY,
@@ -41,7 +36,6 @@ CREATE TABLE IF NOT EXISTS events (
     title VARCHAR(120) NOT NULL
 );
 
-DROP TABLE compilations;
 -- Таблица для подборок
 CREATE TABLE IF NOT EXISTS compilations (
     id BIGSERIAL PRIMARY KEY,
@@ -50,7 +44,6 @@ CREATE TABLE IF NOT EXISTS compilations (
 );
 
 
-DROP TABLE compilation_events;
 -- Таблица-связка подборок и событий
 CREATE TABLE IF NOT EXISTS compilation_events (
     compilation_id BIGINT NOT NULL REFERENCES compilations(id) ON DELETE CASCADE,
@@ -59,7 +52,6 @@ CREATE TABLE IF NOT EXISTS compilation_events (
 );
 
 
-DROP TABLE  participation_requests;
 -- Таблица для заявок на участие
 CREATE TABLE IF NOT EXISTS participation_requests (
     id BIGSERIAL PRIMARY KEY,
