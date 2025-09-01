@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.ewm.stats.dto.EndpointHitRequest;
 import ru.practicum.ewm.stats.dto.EndpointHitResponse;
 import ru.practicum.ewm.stats.dto.ViewStatsResponse;
+import ru.practicum.ewm.stats.exception.ConditionsNotMetException;
 import ru.practicum.ewm.stats.mapper.StatsMapper;
 import ru.practicum.ewm.stats.model.EndpointHit;
 import ru.practicum.ewm.stats.repository.StatsRepository;
@@ -29,6 +30,14 @@ public class StatsServiceImpl implements StatsService {
     @Override
     public List<ViewStatsResponse> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         List<ViewStatsResponse> viewStats;
+
+        if (start == null || end == null) {
+            throw new ConditionsNotMetException("Даты начала и окончания периода не могут быть null");
+        }
+
+        if (start.isAfter(end)) {
+            throw new ConditionsNotMetException("Дата начала позднее даты конца");
+        }
 
         if (Boolean.TRUE.equals(unique)) {
             viewStats = statsRepository.findUniqueViewStats(start, end, uris);
