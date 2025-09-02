@@ -28,7 +28,7 @@ public class NewEventDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String eventDate;
 
-    private Location location;
+    private LocationDto location;
 
     private Boolean paid;
 
