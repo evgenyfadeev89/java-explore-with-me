@@ -1,8 +1,6 @@
 package ru.practicum.ewm.dto;
 
 import lombok.*;
-import ru.practicum.ewm.model.Location;
-
 
 @Data
 @NoArgsConstructor
