@@ -59,6 +59,9 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm_db
       - SPRING_DATASOURCE_USERNAME=ewm_user
       - SPRING_DATASOURCE_PASSWORD=ewm_pass
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVICES-STATSERVICE_URI=http://stats-server:9090
+      - JAVA_OPTS=-Djdk.httpclient.HttpClient.log=errors,requests
     depends_on:
        ewm-db:
         condition: service_healthy

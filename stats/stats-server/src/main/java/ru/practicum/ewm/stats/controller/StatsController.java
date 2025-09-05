@@ -23,13 +23,14 @@ public class StatsController {
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<EndpointHitResponse> createHit(@RequestBody EndpointHitRequest request) {
+    public EndpointHitResponse createHit(@RequestBody EndpointHitRequest request) {
         log.info("Отправлен POST запрос к /hit");
-        return ResponseEntity.ok(statsService.createHit(request));
+        return statsService.createHit(request);
     }
 
 
     @GetMapping("/stats")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ViewStatsResponse>> getStats(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
