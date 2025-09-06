@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -58,10 +60,23 @@ public class Event {
     @Column(name = "title", nullable = false, length = 120)
     private String title;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
     @Transient
     private Long views;
 
     public enum EventState {
         PENDING, PUBLISHED, CANCELED
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setEvent(this);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setEvent(null);
     }
 }
